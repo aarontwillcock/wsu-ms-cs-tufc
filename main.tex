@@ -1,0 +1,625 @@
+%Document class specification
+%	11point font per Exam Specifications
+%	IEEE Computer Society Formatting
+%	Document is one-sided. Not two-sided like a book
+\documentclass[11pt,compsoc,oneside]{report}
+
+%Using the University of Michigan Rackham format
+%	http://dept.math.lsa.umich.edu/graduate/templates/rac.sty
+\usepackage{sty/rac}
+%Packages
+\usepackage[affil-it]{authblk}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumitem}
+\usepackage[margin=1in]{geometry}
+\usepackage{makecell}
+\usepackage{graphicx}
+\usepackage{makeidx}
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+\usepackage{setspace}
+%\usepackage{subfigure}
+\usepackage{verbatim}
+\usepackage{wrapfig}
+\usepackage{ifpdf}
+\usepackage{filecontents,lipsum}
+\usepackage[noadjust]{cite}
+% \ifCLASSINFOpdf
+%   \usepackage[pdftex]{graphicx}
+% \else
+%   \usepackage[dvips]{graphicx}
+% \fi
+%\usepackage{subcaption}
+\usepackage{filecontents}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.5}
+\usepackage{pgfplotstable}
+\usepackage{array}
+%\ifCLASSOPTIONcompsoc
+%  \usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
+%\else
+% \usepackage[caption=false,font=footnotesize]{subfig}
+%\fi
+%\usepackage{fixltx2e}
+\usepackage{stfloats}
+\usepackage{url}
+\newcommand{\Tau}{\mathrm{T}}
+
+\doublespacing
+\linespread{2.0}
+\huge
+
+\begin{document}
+\titlepage{TRADING UTILIZATION FOR CIRCUITRY:\\HARDWARE-SOFTWARE CO-DESIGN FOR REAL-TIME SOFTWARE-BASED SHORT-CIRCUIT PROTECTION}{AARON WILLCOCK}{DOCTOR OF PHILOSOPHY}
+{Department of Computer Science}{2018}
+{Nathan Fisher, Ph.D\\
+ Loren Schwiebert, Ph.D\\
+ Weisong Shi, Ph.D
+}
+\pagenumbering{roman}
+\setcounter{page}{1}
+\dedicationpage{To Ellen, Kevin, Sue, Carina, and Connor.}
+\ackowledgementspage{This research has been supported in part by: \\
+the US National Science Foundation (CNS Grant Nos. 0953585, 1205338,  \& 1618185)\\ and a Thomas C. Rumble Graduate Fellowship from Wayne State University.
+}
+
+\tableofcontents     	% Table of contents required for qual
+\listoffigures       	% List of figures required for qual
+\listoftables			% List of tables (not required) for qual
+
+%Chapter Initialization
+\startthechapters
+\pagenumbering{arabic}
+\setcounter{page}{1}	%Begin at page 1
+
+\chapter{Introduction}		\label{chap:Introduction}
+
+\section{Motivation and Applications}
+Excessive current and thermal cycling can be degrading and destructive to power circuitry.
+One avenue for preventing excessive current is short-circuit protection. 
+With the rise in semiconductor power density, the required latency for detecting and halting shorts is substantially reduced \cite{gateChargeChara}.
+The need for short protection is found in a variety of industrial applications that use power semiconductors. 
+These power semiconductors are found in power converters and inverters \cite{hiSpeedProtection}.
+On a large scale, this includes photovoltaic systems and hybrid fuel cells \cite{photoVoltaic}.
+Furthermore, the need for reliable short-circuit protection in consumer electronics has been brought to the forefront by the recent Samsung Galaxy Note 7 recall due to fires caused by short-circuits in the device battery \cite{explodingPhone}.
+In both large and small scale power applications, power converters and inverters are typically accompanied by short-circuit protection in the form of a fuse, thermal breaker, or other circuitry designated to prevent high current responsible for circuit damage.
+
+
+\section{Problem Statement}
+To address the need for flexible, real-time short-circuit protection, our problem statement is:
+Given a Direct-Current Resistor-Inductor circuit, devise a hardware-software co-design approach which relates hard-real time requirements to hardware size. More specifically, our objective is to construct a hardware-software relationship which allows designers to:
+\begin{enumerate}
+    \item minimize hardware size while meeting maximum real-time utilization requirements, and
+    \item minimize real-time utilization while meeting maximum hardware size requirements.
+\end{enumerate}
+
+The motivation behind this approach is to reduce dedicated circuitry in embedded systems requiring short-circuit protection. The approach is specifically designed for allowing existing systems with microprocessors to migrate short-circuit protection from dedicated-circuitry-only to a software-based implementation and for future systems to be designed with the proposed tradeoff in mind.
+
+\section{Proposed Solution}
+To address the need for flexible, real-time short-circuit protection, we propose a short-protection method via a real-time task which requires an air-core inductor to be placed in series between the system's resistive load and ground. An Analog-to-Digital Converter (ADC) pin on the microcontroller executing the real-time task is used to sample voltage across the inductor (or a small resistor) to measure current. Short protection is then accomplished by identifying the maximum expected current and the maximum rate of current change as limited by the inductor. Using the inductor parameters in conjunction with ADC sampling times, a minimum period is derived for the real-time short-protection task. From this minimum period, a relationship between minimum real-time utilization under Earliest Deadline First (EDF) scheduling and inductor volume is provided. Real-time or physical system constraints may be applied to this relationship to facilitate the hardware-software co-design of a real-time short-circuit protection system.
+
+\section{Contributions}
+%Contributions: Long-form writing
+The software-based protection methods depicted herein provide an alternative fault protection technique to circuit designers. By relating utilization to board space consumed by (and volume of) an inductor, system designers may trade short-protection circuitry for real-time task utilization on the microcontroller. Real-time short-circuit protection systems may leverage either end of the relationship to meet fault-tolerance requirements. For example, applications with little available board space may opt for smaller inductors (minimizing board space) and greater utilization. Example applications include smaller IGBT modules as found in electric vehicles or applications where minimizing weight is import\cite{IGBTvehicle}. In contrast, larger applications with more available board space or a greater real-time task set may opt for a larger inductor and thus a smaller utilization for the short-protection task. Example applications include high power IGBT modules in photovoltaic and wind turbine inverters \cite{photoVoltaic}\cite{hiPowerIGBTwind}. Furthermore, the established relationship between board space and processor utilization acts as a conduit through which advancements in electrical engineering may improve real-time system efficiency and vice versa.
+To summarize, our contributions include:%Contributions: Bullet-point summary
+\begin{description}
+\item [1.] a software-based short protection method for Direct Current Resistor-Inductor (DC-RL) circuits,
+\item [2.] a relationship between air-core inductor spatial parameters and real-time processor utilization under preemptive uniprocessor EDF scheduling,
+\item [3.] a process for identifying optimal inductor orientation given a fixed volume, and
+\item [4.] a process for minimizing the required utilization given a fixed volume for an air-core inductor and vice versa.
+%\item [5.] A process for minimizing the required volume for an air-core inductor given a fixed utilization.
+\end{description}
+
+
+%Outline of paper
+\section{Outline}
+Chapter \ref{chap:related work} details the related work in both problem domains. Chapter \ref{chap:electronics background} provides an electronics background and nomenclature overview. Chapter \ref{chap:electronic system model} provides the first paper contribution, a model for identifying circuit properties. Chapter \ref{chap:method of protection} depicts short protection methods given the constraints provided in the circuit model. Chapter \ref{chap:real-time system model} formalizes the relation between real-time scheduling and short-circuit protection. Chapter \ref{chap:model optimization} provides the model optimization for both fixed board constraints and fixed real-time utilization as contributions from this paper. Chapter \ref{chap:experiments} details experiments conducted to validate the proposed relationship and theoretical utilization. Chapter \ref{chap:results} discusses the results of experimentation. Chapter \ref{chap:conclusion} identifies conclusions and future work.
+
+%Intersection of EE and RTS
+%The problem of protecting electronics from short-circuits has traditionally been a concern of electrical engineering and has been addressed through several techniques including current mirrors and clamp circuits \cite{litRev}. With the application of real-time software to short protection, we shift the problem to the intersection of electrical engineering, cyber-physical, and real-time systems. Thus, solutions are subject to the physical, electronic, and real-time limitations of the system.
+
+%The proprosed software-based short-circuit protection approach aims to reduce dedicated circuitry on platforms already using a microprocessor and provide an alternative method to short protection. The motivation behind this hardware-software co-design approach is the flexibility and ubiquity of microprocessors. The potential for movement of protection systems from dedicated circuitry to software implementations. [OLD]
+
+
+\chapter{Related Work}		\label{chap:related work}
+
+To the best of our knowledge, current approaches to short-circuit protection are rooted in dedicated circuitry and do not use adaptive real-time processing. Modern methodologies include Zone Selective Interlocking on systems with alternating current (AC) which, while successful, cannot be directly applied to DC \cite{scd}. Other methods use the Rogowski coil in conjunction with differential and integral signals from the coil to detect a short \cite{rogowskiCoil}. While feasible, the Rogowski coil implementation is large and does not slow current rise in the system. Some methods only require sampling of gate emitter voltage and a reference voltage \cite{gateChargeChara}. Krone et al. use the gate emitter voltage, but also reference the DC link capacitors to assist in protection \cite{fastAndEasilyImplementable}. Each method, while different, relies solely on dedicated circuitry for short protection. Although variations exist in the components used and the design of the circuits, we sought an alternative where required circuitry was minimized.
+
+Furthermore, protection methods relying on the change in current, as in Hain and Bakran \cite{ultraFastSCD}, require an inductor. This approach also includes auxiliary MOSFETs, latch circuits, and comparators. Additionally, some current protection methods relying on gate charge require differential amplifiers attached to auxiliary MOSFETs as found in Horiguchi et al. which also require an inductor in test circuits \cite{hiSpeedProtection}. Both models have more components than the single inductor required for protection in this approach, providing more motivation for software-based protection.
+
+In the area of cyber-physical and real-time systems, we are unaware of work specific to short protection. However, works identifying real-time tasks with multiple operating modes and the ability to adapt to the environment are present \cite{modeChangeSystems}. A modern example of such systems include thermal-aware computing in Hettiarachchi et al. \cite{thermalAware}. Other adaptive approaches can be found in works on rate-adaptive tasks as in Buttazzo et al. \cite{rateAdaptive}. Biondi and Buttazzo furthered this model with thorough analysis of its implications on the executing processor \cite{engineCtrl}. Combining the objectives, short protection and adaptive real-time tasks, we aim to provide an alternative short protection method by viewing the problem as a hardware-software co-design problem.
+
+\chapter{Electronics Background}\label{chap:electronics background}
+To provide background for understanding the proposed model, the following section includes an overview of nomenclature, DC RL circuits, inductors, and shorts. These electronics fundamentals can be found in a physics textbook \cite{uniphy}.
+
+\section{Nomenclature}
+%Define all terms (voltage, current, etc.) and the symbols that represent them.
+For the purpose of understanding the electronics background and the system model, we use the following nomenclature:
+
+\begin{center}
+\bgroup
+\def\arraystretch{1.25}%
+\begin{tabular}{| l | c | c | c |}
+  \hline			
+  Term & Symbol & Unit\\  \hline \hline \cline{1-3}
+  Current & I & Ampere (A)\\ \cline{1-3}
+  Inductance & L & Henry (H)\\ \cline{1-3}
+  Voltage & V & Volt (V)\\ \cline{1-3}
+  \hline  
+\end{tabular}
+\egroup
+\end{center}
+
+\section{First-Order DC RL Circuits}
+%Define a DC circuit. Include Figure.
+Direct current (DC) circuits are circuits in which the direction of current flow does not change \cite{uniphy}. A DC circuit in which current passes through a resistor and an inductor is deemed a DC RL circuit where the "R" represents the resistor and "L" the inductor. The model presented in Chapter \ref{chap:electronic system model} relies on a first-order DC RL circuit with the resistor and inductor in series. An example first-order DC RL circuit is provided in Figure \ref{fig:ModelDCRL} with two resistors and an inductor in series.
+\begin{figure}
+	\centering
+    \includegraphics[width=0.25\linewidth]{img/Model_DC_RL_Circuit_General.pdf}
+    \caption{A DC RL circuit with load $R_0$, inductor $L_0$, optional resistor $R_1$, and switch for inducing shorts.}
+    \label{fig:ModelDCRL}
+\end{figure}
+%\begin{figure}[!htbp]
+%	\centering
+%    \includegraphics[scale=2.0]{img/DC_RL_Circuit_General.pdf}
+%    \caption{An Example DC RL Circuit}
+%    \label{fig:DCRL}
+%\end{figure}
+\section{Inductors}
+An inductor is a passive electronic component which resists change in current flow through itself. This property is useful as current cannot change instantaneously through an inductor. The equations for these properties are provided in Chapter \ref{chap:method of protection}.
+\subsection{Spatial Parameters}
+%Figure of inductor with associated variables. Derivations will be explained later.
+The model proposed in Chapter \ref{chap:electronic system model} will rely on a single inductor. The spatial properties of an inductor may be modeled as seen in Figure \ref{fig:InductorParams}.
+\begin{figure}
+	\centering
+    \includegraphics[width=0.25\linewidth]{img/Inductor_Parameters.pdf}
+    \caption{Inductor spatial parameters}
+    \label{fig:InductorParams}
+\end{figure}
+This particular representation is a solenoid-style inductor where $N$ represents the number of completed turns, $A$ is the area of a coil, $\ell$ represents the length of the inductor. The relationship between these parameters and inductance can be constructed from fundamental electricity and magnetism equations found in \cite{uniphy}. This relationship is modeled as:
+\begin{equation}\label{eq:InductorSpatial}
+L = \frac{\mu N^{2}A}{\ell}
+\end{equation}
+where $\mu$ is the permeability of free space. Note that for a particular manufactured circuit, the spatial parameters are fixed -- i.e., $\ell$, $A$, and $N$ are static\footnote{In Chapter \ref{chap:model optimization}, we consider variable sized inductors as part of our hardware-software co-design optimization.}. Equation (\ref{eq:InductorSpatial}) will be referenced in Chapter \ref{chap:method of protection} to relate current-flow to inductor size and in Chapter \ref{chap:model optimization} to optimize hardware-software co-design solutions.
+\subsection{Assumption of Constant Turn Density} \label{ssec:Assumption of Constant}
+Equation (\ref{eq:InductorSpatial}) contains the term $\frac{N}{\ell}$, referred to as \textit{turn density}. \textit{Turn density} must remain constant with an increase in length for inductance to increase. Thus if an inductor is to be extended from length $\ell$ to $2\cdot \ell$, the number of turns $N$ should be doubled to $2\cdot N$ accordingly to maintain constant \textit{turn density}. Doubling both $N$ and $\ell$ results in doubled inductance $L$. We assume constant \textit{turn density} throughout Chapter \ref{chap:model optimization}. This assumption is reasonable since elongating an inductor while conserving turn density is equivalent to placing inductors in series.
+\subsection{Inductor Core Composition}
+In contrast inductors with ferro-magnetic cores, our model assumes the inductor has an air-core. Equation (\ref{eq:InductorSpatial}) reflects this assumption as it applies only to air-core inductors. We view this assumption as an upper bound on board space consumed since ferro-magnetic core inductors provide a greater inductance by volume \cite{NiFe}.
+
+\section{Definition of Short and Fault Types}
+%Define short in the context of this paper
+For the purposes of this model, a short is defined as the flow of current through an alternate, unintended path in a circuit with little or no impedance. This loss of impedance provides an opportunity and a drawback. In the best case, this loss of impedance causes a large change in current which, through the use of an inductor, can be slowed and used to detect the short. However, shorts lead to joule heating, the process whereby current through a conductor releases heat modeled as:
+\begin{equation}\label{eq:JouleHeating}
+\text{Heat} \propto R I^{2} t
+\end{equation}
+Here, $R$ is resistance, $I$ is current, and $t$ is time \cite{uniphy}. The potential for joule heating to cause permanent damage serves as motivation to detect short-circuits. Protection of short-circuits, however, requires catching both types of short-circuit fault: Fault under Load (FUL) and Hard-Switching Fault (HSF).
+
+\subsection{Fault Under Load vs Hard-Switching Fault}
+A Fault Under Load is a fault where circuit has an active load at the time of the fault. In this type of fault, the current and impedence are both non-zero. The short forces current to rise above the operating current at the time of the short. This fault type, commonly analyzed in IGBTs, has been studied in \cite{scanalysis}.
+
+In contrast, a Hard-Switching Fault is a fault where the circuit does not have an active load at the time of the fault \cite{hiSpeedProtection}. In contrast to an FUL, an HSF does not have an initial operating current since the instant the circuit receives power it has already been routed around the load by the short.
+
+\section{Current as a Function of Time}
+In the proposed system, a real-time task must be related to the change in current through an inductor. The following equation will provide such a relationship used Chapter \ref{chap:method of protection}:
+\begin{equation}\label{eq:CurrentAtTime}
+I(t) = \frac{V}{R}(1-e^{-t \frac{R}{L}})
+\end{equation}
+where $I(t)$ is current at time $t$, $V$ is a constant voltage to the circuit, $R$ is resistance, and $L$ is inductance.
+\chapter{Electronic System Model}\label{chap:electronic system model}
+%Define the system model and its components (DC RL Circuit, the OCM)
+Relying on the provided background, we propose a system model with four primary components:
+\begin{description}
+\item [1.] A DC RL circuit for which software-based short-circuit protection is applicable and board space is consumed by air-core solenoid-style inductor.
+\item [2.] An Operating Current Model (OCM) to identify operating currents, voltages, and critical current.
+\item [3.] Methods of detecting a short-circuit in DC RL circuits: protection by maximum operating current and by maximum change in current. This component of the model will be discussed in Chapter \ref{chap:method of protection}.
+\item [4.] A real-time sporadic task for short protection. This task model is accompanied by utilization analysis under uniprocessor EDF scheduling. This component of the model will be discussed in Chapter \ref{chap:real-time system model}.
+\end{description}
+
+\section{DC RL Short-Circuit Schematic}
+Figure \ref{fig:ModelDCRL} is a model DC RL circuit with a switch for simulating a short-circuit. This schematic provides the requirements for the monitored, short-protected circuit: a voltage supply $V_{in}$, circuit load $R_{0}$, inductor $L_{0}$, and the optional, low-value resistor $R_{1}$ used for sensing current. If $R_{1}$ is not used, the resistance through inductor $L_{0}$ may be used to calculate current. Note that the short occurs via the switch around $R_{0}$.
+%\begin{figure}
+%	\centering
+%    \includegraphics[scale=2.0]{img/Model_DC_RL_Circuit_General.pdf}
+%    \caption{A DC RL circuit with load $R_0$, inductor $L_0$, optional resistor $R_1$ and switch for simulating potential shorts.}
+%    \label{fig:ModelDCRL}
+%\end{figure}
+
+As previously mentioned, in a manufactured circuit the spatial parameters and inductor value of $L_0$ in Figure \ref{fig:ModelDCRL} are expected to be fixed. During the design phase however, inductor parameters may be altered to increase space efficiency. These properties are afforded by Equation (\ref{eq:InductorSpatial}).
+
+\section{Board Space Consumed}
+%\begin{figure}
+%	\centering
+%    \includegraphics[scale=2.0]{img/Inductor_Perpendicular_Mount.pdf}
+%    \caption{Board space consumed by a solenoid-style air-core inductor - the highlighted square circumscribing area $A$ of the inductor}
+%    \label{fig:BoardSpaceConsumed}
+%\end{figure}
+For ease of analysis, we assume the inductor is mounted perpendicular to the board. Therefore, the board space consumed by the inductor is defined as the square that circumscribes area $A$ of the inductor as seen in Figure \ref{fig:InductorParams}:
+\begin{equation}\label{eq:AreaConsumed}
+A_{consumed} = \frac{4}{\pi}A
+\end{equation}
+This definition of board space consumed will be referenced in Chapter \ref{chap:model optimization} where the provided model is optimized for minimum board space consumption and volume.
+\section{Operating Current Model (OCM)}
+The OCM is a framework for characterizing DC RL circuits. This model makes for easy analysis of attributes like maximum current, maximum voltage, and critical current. Hereafter, circuits are modeled as:
+\begin{equation}\label{eq:OCM}
+C = (\Gamma_{I}, I_{crit})
+\end{equation}
+where $C$ is the circuit described using parameters $\Gamma_{I}$ and $I_{crit}$. $\Gamma_{I}$ is defined such that:
+\begin{equation}\label{eq:OCMTuples}
+\Gamma_{I} = (\gamma_{1},\gamma_{2},...,\gamma_{n})
+\end{equation}
+\begin{equation}\label{eq:OCMIVPairs}
+\gamma_{i} = (I_{i},V_{i})\qquad\text{for all  } i=1,...,n
+\end{equation}
+Here $\Gamma_{I}$ is composed of $n$ operating current sets $\gamma_{i}$ where $i$ is the index of an operating current set. Each operating current set is a 2-tuple of an operating current, $I_{i}$, and operating voltage, $V_{i}$. The resistance, $R$, of each operating current set can be solved using Ohm's Law and is not included. 
+
+$I_{crit}$ is defined as the critical current of the system as determined by the user. The critical current represents the current value at which the system physically degrades or, in practice, the current value the user wishes to avoid reaching.
+
+Two final derivable parameters $I_{max}$ and $V_{max}$, are extracted from the OCM as follows:
+\begin{equation}\label{eq:Imax}
+I_{max} = \max_{i \in \Gamma_{I}} \{\gamma_i\} \quad \text{and} \quad V_{max} = \max_{i \in \Gamma_{I}} \{\gamma_i\}
+\end{equation}
+Note that if $I_{crit} = I_{max}$, any current flow over $I_{max}$ is assumed to be damaging and may not be prevented through this short protection model. Thus, we assume $I_{max} < I_{crit}$.
+\chapter{Method of Protection}\label{chap:method of protection}
+%Overview of the methods of short protection.
+Detecting a short in the generalized first-order DC RL circuit provided by Figure \ref{fig:ModelDCRL} is possible via two methods presented here:
+\begin{description}
+\item [1.] Detecting current over $I_{max}$.
+\item [2.] Detecting $\Delta I$ over the maximum change in current allowed by the inductor.
+\end{description}
+Both methods are applicable to any system which samples current of a monitored circuit. To prevent damage from shorts and fully utilize the following protection methods, power to the monitored circuit(s) must be removed immediately upon detection of a short. Without removal of power, these methods merely support detection and not protection.
+\section{Method 1: Maximum Operating Current}
+One short protection method in a DC RL circuit is to detect when current rises above $I_{max}$. A current value above $I_{max}$ indicates a malfunction caused current to rise above the maximum current in the OCM. When $I$ exceeds, $I_{max}$, power to the monitored circuit should be disabled to protect the hardware. 
+\section{Method 2: Maximum Change in Current}
+%Define the dI/dt method
+Another method of protection requires observing the rate of change of current. From Equation (\ref{eq:CurrentAtTime}) it is known that, given a constant voltage and resistance, the current will converge to $\frac{V}{R}$. During convergence, the slope of $\Delta I$ approaches zero. The derivative of Equation (\ref{eq:CurrentAtTime}) provides the value of $\Delta_{\max}I$:
+\begin{equation}
+\Delta I = \frac{\partial}{\partial t}I(t) = \frac{\partial}{\partial t}(\frac{V}{R}(1-e^{-t \frac{R}{L}})) = \frac{V}{L}e^{-t \frac{R}{L}}
+\end{equation}
+Assuming constant inductance, resistance, and voltage, the largest values of $\Delta I$ occur at $t = 0$ and $R = 0$ while excluding infinite inductance ($L \neq +\infty$). This result provides two important conclusions:
+\begin{description}
+\item [1.] If $R \neq 0$, $\frac{dI(t)}{dt} = \frac{V}{L}$ instantaneously at time $t = 0$ only. Therefore, the change in current between two consecutive current samples should be less than $\frac{V}{L}$.
+\item [2.] If the change in current between two consecutive current samples is equivalent to $\frac{V}{L}$, then $R = 0$. Thus, a short is occurring.
+\end{description}
+Thus, maximum derivative of current through an inductor is:
+\begin{equation}\label{eq:DeltaMax}
+\Delta_{\max}I = \frac{V}{L} \nonumber
+\end{equation}
+Since all non-superconducting materials will provide some impedance, the $\Delta_{\max}I$ should have a threshold where $\epsilon$ is an implementation-specific offset. Thus, when consecutive current samples are compared and $\Delta I = \frac{V}{L} - \epsilon $, it is likely that $R \approx 0$ and a short is occurring. A benefit of using $\Delta_{\max}I$ is the potential for short detection before $I_{max}$ has been reached. In HSFs, the initial current $I = 0$ potentially allowing $\Delta I$ to approach $\Delta_{\max}I$ before it exceeds $I_{max}$.
+\section{Time-to-Detection}
+A valuable detection occurs before critical current levels are reached, hence the real-time requirement. Per the OCM, to detect and halt a short before critical current levels requires that enough samples occur in the time taken for current to rise from its present value, $I$, to $I_{crit}$. For the remainder of this paper, we deem this time frame the \textit{time-to-detection}.
+
+\subsection{Arbitrary Operating Voltage}
+%Define minimum time-to-detection
+If the OCM for the circuit in question contains a single operating voltage, it must hold that:
+\begin{equation}\label{eq:SingleV}
+\forall  V  \in \Gamma_{I}, V = V_{max}
+\end{equation}
+If Equation (\ref{eq:SingleV}) holds, the \textit{time-to-detection}  is:
+\begin{equation}\label{eq:TimeToDetect}
+\delta(I,V) = \frac{I_{crit}-I}{V}\cdot L
+\end{equation}
+where $\delta(I,V)$ is \textit{time-to-detection}, $I$ is current, $I_{crit}$ is the critical current, $V$ is voltage value, and $L$ is inductance. The function provides the time required for current to rise from current, $I$, to the critical current, $I_{crit}$, in a DC RL circuit with voltage $V$ and inductance $L$. This function demonstrates that lower currents and voltages provide a lower \textit{time-to-detection}.
+ 
+To use this function for identifying the smallest time-to-detection in an OCM with multiple voltages would be optimistic, however. If at the instant a short occurs the operating voltage increases, the value of $\delta(I,V)$ will be an overestimate of the time required for $I$ to exceed $I_{crit}$.
+
+\subsection{Maximum Operating Voltage}
+Since using Equation (\ref{eq:TimeToDetect}) becomes optimistic when multiple operating voltages are involved, we can remove optimism by replacing $V$ from Equation (\ref{eq:TimeToDetect}) with $V_{max}$:
+\begin{equation}\label{eq:TimeToDetectVmax}
+\delta(I,V_{max}) = \frac{I_{crit}-I}{V_{max}}\cdot L
+\end{equation}
+Equation (\ref{eq:TimeToDetectVmax}) ensures a short combined with an instantaneous voltage change to $V_{max}$ is still detected before reaching $I_{crit}$.
+
+\subsection{Minimum Time-to-Detection}
+%Define minimum time-to-detection
+To provide the worst-case time-to-detection, we use the maximum current, $I_{max}$ and voltage, $V_{max}$, from the OCM. This \textit{minimum time-to-detection} is defined as:
+\begin{equation}\label{eq:MinTimeToDetect}
+\delta_{min} = \delta(I_{max},V_{max}) = \frac{I_{crit}-I_{max}}{V_{max}}\cdot L
+\end{equation}
+This time frame represents time taken for current to rise from the maximum operating current, $I_{max}$, to the critical current, $I_{crit}$, with the highest voltage, $V_{max}$. This \textit{minimum time-to-detection} will be used as a temporal constraint for the proposed real-time task.
+\chapter{Real-time System Model}\label{chap:real-time system model}
+%Overview of real-time systems.
+Thus far, the spatial properties of an inductor have been related to its inductance. Thereafter, inductance is found to determine the maximum possible current rise at any given time, $\frac{V}{L}$ Amperes per second. This leads to the shortest time span over which a short would need to be detected, the \textit{minimum time-to-detection} $\delta_{min}$. Using $\delta_{min}$, we provide a real-time system short-circuit protection task and its timing requirements. Before doing so, we present a real-time background on the sporadic task model and uniprocessor EDF scheduling.
+
+\section{Sporadic Task Model}
+In real-time systems, \textit{sporadic tasks} are defined by a \textit{worst-case execution time} (WCET) $e_{i}$, relative deadline $d_{i}$, and minimum period $p_{i}$. The relative deadline is the time between each job arrival and its deadline. The minimum period is the smallest time between successive job arrivals. We use a sporadic task to model the short-circuit protection task \cite{sporadicTaskModel}. The proposed sporadic task will have an \textit{implicit deadline} where a new job of the short-circuit task $\mathrm{T}_{scd}$ may arrive at the absolute deadline of the previous job.
+
+For our short-circuit task $\mathrm{T}_{scd}$, the execution time depends on the short-circuit protection algorithm used, processor speed, and ADC conversion time. Thus, the execution time is not assessed here but modeled as $e_{scd}$.
+
+The minimum period, however, is derived from Equation (\ref{eq:TimeToDetectVmax}) which provides a scaling \textit{time-to-detection}. The minimum period of the sporadic task must be half the value of the \textit{minimum time-to-detection}. This is required to ensure one full job of $\mathrm{T}_{scd}$ is completed strictly after the short-circuit begins. This requirement is demonstrated in Figures \ref{fig:shortedschedule} and \ref{fig:stoppedschedule} where $\mathrm{T}_{scd}$ executes with a period equal to $\delta_{min}$ and $\frac{\delta_{min}}{2}$. Recall that $\delta_{min}$ time units after a short, the current level has reached a $I_{crit}$. Each sporadic job is triggered $\delta(I,V_{max})/2$ seconds after the release of the preceding job, allowing release times to scale with current. The temporal requirements may be converted into a real-time sporadic task $\mathrm{T}_{scd} = (e_{scd}, p_{scd})$ with the following parameters:
+\begin{equation}\label{eq:ExecutionTime}
+e_{scd} = \textit{worst case execution time }\text{of short-circuit algorithm}
+\end{equation}
+\begin{equation}\label{eq:Period}
+p_{scd} = \frac{\delta(I_{max},V_{max})}{2}
+\end{equation}
+\begin{figure}
+	\centering
+    \includegraphics[scale=1.8]{img/shortedschedule.pdf}
+    \caption{$\mathrm{T}_{scd}$ executing with $p_{scd} = \delta(I_{max},V_{max}) = 4$. The short begins at $t = 2$ and $I_{crit}$ is reached at $t = 6$ before $\mathrm{T}_{scd}$ can halt the short.}
+    \label{fig:shortedschedule}
+\end{figure}
+\begin{figure}
+	\centering
+    \includegraphics[scale=1.8]{img/stoppedschedule.pdf}
+    \caption{$\mathrm{T}_{scd}$ executing with $p_{scd} = \frac{\delta(I_{max},V_{max})}{2} = 2$. The short begins at $t = 2$ and is halted by $\mathrm{T}_{scd}$ at $t = 5$ before $I_{crit}$ is reached.}
+    \label{fig:stoppedschedule}
+\end{figure}
+%Game Fucking Over
+\section{Preemptive Uniprocessor EDF Scheduling}
+%Cite optimality of uniproc preemptive EDF scheduling
+%Cite utilization calculation for uniproc preemptive EDF scheduling.
+With $\mathrm{T}_{scd}$ defined, we derive its utilization under preemptive uniprocessor EDF scheduling. According to \cite{LiuLayland}, a set of implicit-deadline sporadic tasks is schedulable with EDF if and only if:
+\begin{equation}\label{eq:EDFUtilization}
+\sum_{i=1}^{n} \frac{e_{i}}{p_{i}} \leq 1
+\end{equation}
+where $i$ is the index of a task in the set, $e_{i}$ is the execution time and $p_{i}$ is the period. Since we use a single, sporadic task with implicit deadlines, the utilization for $\mathrm{T}_{scd}$ is:
+\begin{equation}\label{eq:SCDUtilization}
+U(\mathrm{T}_{scd}) = \frac{2 \cdot e_{scd}}{\delta(I,V_{max})}
+\end{equation}
+Using the \textit{minimum time-to-detection}, Equation (\ref{eq:SCDUtilization}) becomes:
+\begin{equation}\label{eq:SCDMinUtilization}
+U(\mathrm{T}_{scd}) = \frac{2 \cdot e_{scd}}{\delta(I_{max},V_{max})}
+\end{equation}
+Substituting in Equations (\ref{eq:TimeToDetect}) and (\ref{eq:InductorSpatial}) gives:
+\begin{equation}\label{eq:SCDSpatialUtilization}
+U(\mathrm{T}_{scd}) = (\frac{2 \cdot e_{scd}}{(I_{crit}-I_{max})} \cdot V_{max} \cdot \frac{\ell}{\mu N^{2}A})
+\end{equation}
+Equation \ref{eq:SCDSpatialUtilization} relates the inductor spatial parameters to $\mathrm{T}_{scd}$ utilization.
+
+%\section{Detection as a Hard Real-Time Task}
+%As previously mentioned, the correctness of a real-time computation has a temporal component, in this case the relative deadline. A real-time task in which %results produced after a deadline have some utility is a \textit{soft} real-time task. Video rendering could be considered a soft real-time task. One in which %a result produced after a deadline has no utility but results in no damage is considered \textit{firm}. In the case of the proposed real-time task, results %produced after a deadline may cause have disastrous consequences including damage to the controlled system \cite{rts}.
+%\chapter{Real-time Utilization Requirement for Short Detection}
+
+\chapter{Model Optimization}\label{chap:model optimization}
+Having related the board space consumed by an inductor and the real-time utilization under EDF schedulability, we propose an optimal solution for fixed values on either end of the relationship. Given a fixed utilization we propose a minimized board space consumption. Given a fixed allowable board space, we propose a minimized real-time utilization. Before optimization analysis of the model, we clarify the optimal inductor orientation for a given prism.
+
+\section{Optimal Inductor Orientation}
+To find the inductor orientation providing the highest inductance for a given space, we consider two constraints:
+\begin{description}
+\item [1.] The area $A$ from Equation (\ref{eq:InductorSpatial}) requires a square area with regard to board space.
+\item [2.] The board space allowed must be defined in three dimensions: a length $\ell$, width $w$, and height $h$.
+\end{description}
+
+Allowable board space is defined as a set:
+\begin{equation}\label{eq:Prism}
+P = \{\ell,w,h\}
+\end{equation}
+This set provides the prism dimensions in which the inductor resides. Independent of the prism's orientation, $A_{consumed}$ must be the smallest square to circumscribe the area $A$ of the inductor. The largest square face on which the inductor's area, $A$, can be placed is limited by the median dimension in P. Thus, the square of the median is used to fit the largest possible square area:
+\begin{equation}\label{eq:PrismAreaConsumed}
+A_{consumed} = median(P)^2
+\end{equation}
+The only remaining dimension is the length of the inductor:
+\begin{equation}\label{eq:PrismLength}
+\ell = min(P)
+\end{equation}
+
+As previously mentioned and validated in Section \ref{ssec:Assumption of Constant}, the \textit{Assumption of Constant Turn Density} applies to $\ell$ and is required for the remaining model optimization.
+
+\section{Fixed Board Constraints}
+
+The first approach to optimization is made wherein the board space is fixed. This approach is useful in situations where board space is constrained by the embedded application. Suppose allotted board space is restricted to the prism:
+\begin{equation}\label{eq:Prism2}
+P = \{\ell, w, h\} \nonumber
+\end{equation}
+where each element of the set is defined in meters. Combining Equations (\ref{eq:AreaConsumed}) and (\ref{eq:PrismAreaConsumed}) for the area of the inductor $A$ gives:
+\begin{equation}\label{eq:InductorAreaPrism}
+A = \frac{\pi}{4} A_{consumed} = \frac{\pi}{4} \cdot median(P)^2 \nonumber
+\end{equation}
+Substituting into Equation (\ref{eq:SCDSpatialUtilization}) gives the utilization requirement:
+\begin{equation}\label{eq:MinUtilizationPrism}
+U(\mathrm{T}_{scd}) = \frac{2 \cdot e_{scd} \cdot V_{max} \cdot min(P)}{(I_{crit}-I_{max}) \cdot \mu \cdot N^{2} \cdot \frac{\pi}{4} \cdot median(P)^2}
+\end{equation}
+
+\section{Fixed Utilization}
+The second approach to design optimization is made by fixing the utilization allowed for the short protection process. This approach is useful in situations where a microprocessor is already present but the utilization allowed for $\mathrm{T}_{scd}$ is restricted. Suppose the allotted utilization is $u$. Relying on Equation (\ref{eq:SCDMinUtilization}) we find the minimum time-to-detection $\delta(I_{max},V_{max})$ is solved as:
+\begin{equation}\label{eq:MinTimeToDetectSpatial}
+\delta_{min} = \delta(I_{max},V_{max}) = \frac{2 \cdot e_{scd}}{u} \nonumber
+\end{equation}
+Applying Equation (\ref{eq:MinTimeToDetect}) and isolating $L$ we find:
+\begin{equation}\label{eq:InductorFixedUtilization}
+L = \frac{2 \cdot e_{scd} \cdot V_{max}}{u \cdot (I_{crit}-I_{max})} \nonumber
+\end{equation}
+Substituting Equation (\ref{eq:InductorSpatial}) in for $L$ 
+%gives:
+%\begin{equation}\label{eq:MrinPrismUtilizationUnsolved}
+%\frac{\mu N^{2}A}{\ell} = \frac{2 \cdot e_{scd} \cdot V_{max}}{u \cdot (I_{crit}-I_{max})} \nonumber
+%\end{equation}
+and isolating inductor spatial parameters results in:
+\begin{equation}\label{eq:MrinPrismUtilizationUnsolved2}
+\frac{A}{\ell} = \frac{2 \cdot e_{scd} \cdot V_{max}}{u \cdot (I_{crit}-I_{max}) \cdot \mu \cdot N^{2}} \nonumber
+\end{equation}
+Substituting in Equation (\ref{eq:PrismAreaConsumed}) and (\ref{eq:PrismLength}):
+\begin{equation}\label{eq:MinPrismUtilization}
+\frac{median(P)^{2}}{min(P)} = \frac{4}{\pi} \cdot \frac{ 2 \cdot e_{scd} \cdot V_{max}}{u \cdot (I_{crit}-I_{max}) \cdot \mu \cdot N^{2}}
+\end{equation}
+This result indicates the air core inductor used in the DC RL circuit must have a minimum allotted board space defined by P. An inductance greater than the required dimension set P provides a larger \textit{time-to-detection} and allows a lower $U(\mathrm{T}_{scd})$.
+
+\chapter{Experiments}\label{chap:experiments}
+To implement and validate the application of the software-based approach, four separate experiments were conducted. The following section provides the setup and projected utilization for the experiments. Table \ref{tab:ExperimentDescriptions} identifies the variations between experiments. All experiments were performed on Microchip's DM164103-4 demo board with PIC18F45K20 CPU for demonstrating the relationship between scaling utilization and inductance for the approach. This board was selected for ease of reproducability and its ADC module for voltage sampling.
+\begin{table}
+	\centering	
+	\bgroup
+	\def\arraystretch{1.00}%  1 is the default, change whatever you need
+	\begin{tabular}{| c | c | c | c |}
+  		\hline			
+  		Experiment & Fault Type & Demonstrates\\ \hline \hline \cline{1-3}
+  		1 & FUL & Baseline\\ \hline
+  		2 & HSF & Lower initial $I$\\ \hline
+  		3 & FUL & Scaling $L$\\ \hline
+  		4 & FUL & Scaling $U$\\ \hline  
+	\end{tabular}
+	\egroup
+    \caption{Experiment Descriptions}
+    \label{tab:ExperimentDescriptions}
+\end{table}
+\section{Setup}
+Figure \ref{fig:ExperimentSetup} depicts the experimental circuit. In the schematic, subscripts \textit{DM} refer to connections made to the Microchip demo board. The setup also requires attaching oscilloscope probes to ports RA2 in Figure \ref{fig:ExperimentSetup} and RA1 on the demo board.
+\begin{figure}
+	\centering
+    \includegraphics[scale=1.50]{img/Experiment_Setup.pdf}
+    \caption{Experiment Setup Diagram}
+    \label{fig:ExperimentSetup}
+\end{figure}
+
+%Additionally, Figure \ref{fig:Experiment1Setup} depicts the proper connection of all materials in Experiment 1. All probe connections route to the oscilloscope.
+%\begin{figure}
+%	\centering
+%    \includegraphics[scale=0.075]{img/SCD_5_9mH_EXP_SETUP.jpg}
+%    \caption{Experiment Setup Image}
+%    \label{fig:Experiment1Setup}
+%\end{figure}
+The circuit was run to identify experimental operating currents and voltages and their respective maximums. The OCM for the setup using solid 22AWG copper wire was:
+\begin{equation}\label{eq:OCMSetup}
+C = (\Gamma_{I}, 150mA) \quad \Gamma_{I} = (\gamma_{0}) \quad \gamma_{0} = (7.74mA, 3.3V) \nonumber
+\end{equation}
+
+Although the pictured resistor $R_{1}$ is a 10W resistor, we defer to the power rating of a conventional though-hole power resistor: 0.5 Watts. Since 150 mA through a 0.5 Watt resistor exceeds the power rating at an operating voltage of 3.3 V, 150 mA is considered the critical current $I_{crit}$.
+
+After deriving the OCM from the circuit, Equation (\ref{eq:Imax}) provides the maximum operating current and voltage:
+\begin{equation}
+I_{max} =  7.74mA \nonumber \quad V_{max} = 3.3V \nonumber
+\end{equation}
+Note that the critical current is 150mA meaning current above 7.74mA is considered unexpected behavior while current at or above 150mA is damaging.
+
+%TODO - Delete?
+%Using the OCM, values for $I_{max}$ and $\Delta_{\max}I$ can be converted to the appropriate ADC values.
+%Conversion of the ADC resolution to $\frac{\text{Volts}}{\text{ADC Tick}}$ is left to the reader as it is system-dependent. The resolution is then used to convert $I_{max}$ and $\Delta I$ to ADC values.
+\section{Projected Utilization}
+Using the OCM derived from the experiment setup, we apply Equation (\ref{eq:SCDUtilization}) and Equation (\ref{eq:SCDMinUtilization}) as the scaling utilization and minimum utilization. For this projected utilization, our protection method required an execution time of 25 microseconds. Figure \ref{fig:Simulated Utilization} depicts the projection of fixed minimum utilization and the scaling utilization. The minimum utilization indicates the expected minimum utilization required to detect a short-circuit in the experiment. The scaling utilization represents the minimum utilization required at \textit{any} given value of $I$ as derived from Equation (\ref{eq:SCDUtilization}). These projected utilizations indicate the provided short-protection approach could safely detect and halt a short-circuit before critical current levels are reached at a uniprocessor utilization of under 0.1. The scaling utilization curve indicates the lower minimum utilization requirement for systems with lower operating currents.
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[scale=1.05]
+  \begin{axis}[ 
+    xlabel=Operating Current (mA),
+    ylabel=Utilization,
+    grid=major,
+	xmin=0.00,xmax=15.0,
+	ymin=0.08,ymax=0.12
+  	] 
+    \addplot [mark size=1.5, mark=square*, domain=0:15, samples=25]{(2*0.000025*3.3)/(0.0120*(150 - 7.74))*1000};
+    \addplot [mark size=2.0, mark=o, domain=0:15, samples=25]{(2*0.000025*3.3)/(0.0120*(150 - x))*1000};
+    \legend{Minimum Utilization,Scaling Utilization}
+  \end{axis}
+\end{tikzpicture}
+    \caption{Simulated Utilization vs. Operating Current}
+    \label{fig:Simulated Utilization}
+\end{figure}
+\chapter{Results}\label{chap:results}
+\section{Experiments 1 and 2: FUL and HSF Detection}
+To validate the hardware-software co-design approach, two short-circuit fault types were induced in separate experiments. As shown in Table \ref{tab:ExperimentDescriptions}, Experiment 1 induced an FUL short while Experiment 2 inducted an HSF short. Each experiment was run three times and the average data provided in Table \ref{tab:FULHSFComparison}. Three runs per fault type was selected due to time required to manually induce the short and reset each experiment. $I_{c}$ is the current at the time of detection and $\Delta t$ is the latency between short-circuit and detection.
+
+\begin{table}
+	\centering
+	\bgroup
+	\def\arraystretch{1.25}%  1 is the default, change whatever you need
+	\begin{tabular}{| c | c | c | c | c |}
+  		\hline			
+  		Fault & R (Ohm) & $I_{c}$ (mA) & $\Delta t$ (us) & U($\mathrm{T}_{scd}$)\\ \hline \hline \cline{1-5}
+%  		FUL & 510 & 31.867 & 132.27 & 0.1316\\  \hline %Original Averages
+%  		HSF &   0 & 33.733 & 117.59 & 0.1316\\  \hline %Original Averages
+		FUL & 510 & 42.400 & 159.79 & 0.1316\\ \hline
+		FUL & 510 & 38.800 & 142.59 & 0.1316\\	\hline
+		FUL & 510 & 20.000 &  50.39 & 0.1316\\	\hline
+		HSF &   0 & 35.200 & 149.60 & 0.1316\\	\hline
+		HSF &   0 & 35.200 &  72.01 & 0.1316\\	\hline
+		HSF &   0 & 35.200 & 175.20 & 0.1316\\	\hline
+  	\end{tabular}
+	\egroup
+    \caption{FUL and HSF Comparison}
+    \label{tab:FULHSFComparison}
+\end{table}
+
+Both experiments demonstrate FUL and HSF detection before current rises above $I_{crit}$. Both experiments also demonstrate latency one-tenth of sFor the FUL experiment, the short was manually induced. Experiment 2 required removal of load resistor $R_{0}$ from Figure \ref{fig:ExperimentSetup}. This ensures the short begins immediately upon closing the circuit. As a result of this change, there is no initial current in the HSF as there is with the FUL short.
+
+%\begin{figure}
+%	\centering
+%	\begin{tikzpicture}[scale=0.65]
+%	\begin{axis}[
+%    	grid=major,
+%	    axis y line*=left,
+%		xlabel=Time (s),
+%	    ylabel=RA2 (V)]
+%	\addplot[mark size=0.07, mark=o, red] table [x=Time, y=RA2, col sep=comma] {data/rawdata/ECRTS17data/fc.csv};
+%	\label{RAplot}
+%	\addlegendentry{$RA2$};
+%	\end{axis}
+%	\begin{axis}[
+%	    ylabel near ticks, yticklabel pos=right,
+%	    axis x line=none,
+%	    ylabel=RA1 (V)]
+%	    \addlegendimage{/pgfplots/refstyle=Hplot}
+%	    \addlegendentry{$RA2$}
+%	\addplot[mark size=0.7, mark=square*, blue] table [x=Time, y=RA1, col sep=comma] {data/rawdata/ECRTS17data/fc.csv};
+%	\addlegendentry{$RA1$};
+%	\draw[mark=square*] (axis cs:\pgfkeysvalueof{/pgfplots/xmin},1.96000e-01) -- (axis cs:\pgfkeysvalueof{/pgfplots/xmax},1.96000e-01);
+%	\end{axis}
+%	\end{tikzpicture}
+%    \caption{FUL Short Waveform}
+%    \label{fig:FULShort}
+%\end{figure}
+%In addition to the comparison table, the FUL waveform is shown in Figure \ref{fig:FULShort} as it was the most used short-circuit fault test. The plot shows the rise in current (RA2) as the port RA1  voltage is dropped to zero signalling the detection of a fault. Due to its similar nature, the waveform for the HSF experiment is excluded. The current at the time of detection for both fault types in all runs did not exceed $I_{crit}$, 150mA; thus, our short-circuit detection succeeded in detecting all induced shorts for both FUL and HSF.
+\section{Experiments 3 and 4: Inductance and Utilization Scaling}
+In Experiment 4, a variety of inductor values are used in the same setup as Figure \ref{fig:ExperimentSetup}. For each inductor size $L$, a FUL short was induced with the processor at utilization $U = 1.0$ to demonstrate the broadest range of inductors. As seen in Figure \ref{fig:ScalingInductance}, a decrease in inductance given a constant utilization results in a higher current at the time of detection. This trend validates the relationship presented in Equation \ref{eq:SCDSpatialUtilization}. In conjunction with the optimal inductor orientation analysis, the results show short-circuit detection at lower current levels can be traded for a smaller inductor consuming less board space.
+
+In Experiment 5, several utilizations are used in the same setup as \ref{fig:ExperimentSetup}. For each $U(\mathrm{T}_{scd})$, a FUL short was induced with $L = 12 \text{mH}$ to demonstrate the broadest range of utilizations. As presented in Figure \ref{fig:ScalingUtilization}, a decrease in utilization given a constant inductance results in a higher current at the time of detection. This again validates the relationship provided in Equation (\ref{eq:SCDSpatialUtilization}). The results of Experiment 3 and Experiment 4 indicate that $U(\mathrm{T}_{scd})$ can be traded with inductance $L$ in our model to maintain a stable current at the time of detection. It follows that inductor size and board space consumed by the proposed short-circuit protection model may be traded with the utilization of the provided software-based protection approach.
+\begin{figure}
+	\centering
+	\begin{tikzpicture}[scale=1.05]
+	\begin{axis}[
+    		grid=major,
+		xlabel=Current at Detection (mA),
+	    ylabel=Inductance (H)]
+	%\addplot[no markers] table [ col sep=comma, x=Ic, y={create col/linear regression={y=Inductance, x=Ic}}] {data/aggregate/exp3runs.csv};
+	\addplot[only marks, mark=square*, mark size=3.5] table [x=Ic_mA, y=L, col sep=comma] {data/aggregate/ECRTS17data/L120.csv};
+	\addplot[only marks, mark=x, mark size=5.0] table [x=Ic_mA, y=L, col sep=comma] {data/aggregate/ECRTS17data/L095.csv};
+	\addplot[only marks, mark=*, mark size=3.0] table [x=Ic_mA, y=L, col sep=comma] {data/aggregate/ECRTS17data/L081.csv};
+	\addplot[only marks, mark=triangle*, mark size=3.0] table [x=Ic_mA, y=L, col sep=comma] {data/aggregate/ECRTS17data/L056.csv};
+	\addplot[only marks, mark=o, mark size=3.0] table [x=Ic_mA, y=L, col sep=comma] {data/aggregate/ECRTS17data/L039.csv};
+	\legend{$L=12.0mH$,$L=9.5mH$,$L=8.1mH$,$L=5.6mH$,$L=3.9mH$}
+	\end{axis}
+	\end{tikzpicture}
+    \caption{Scaling Inductance (Experiment 3)}
+	\label{fig:ScalingInductance}
+\end{figure}
+\begin{figure}
+	\centering
+	\begin{tikzpicture}[scale=1.05]
+	\begin{axis}[
+    	grid=major,
+		xlabel=Current at Detection (mA),
+	    ylabel=Utilization]
+	%\addplot[no markers] table [ col sep=comma, x=Ic, y={create col/linear regression={y=Utilization, x=Ic}}] {data/aggregate/exp4runs.csv};
+	\addplot[only marks, mark=square*, mark size=3.5] table [x=Ic_mA, y=U, col sep=comma] {data/aggregate/ECRTS17data/U1000.csv};
+	\addplot[only marks, mark=x, mark size=5.0] table [x=Ic_mA, y=U, col sep=comma] {data/aggregate/ECRTS17data/U0694.csv};
+	\addplot[only marks, mark=*, mark size=3.0] table [x=Ic_mA, y=U, col sep=comma] {data/aggregate/ECRTS17data/U0500.csv};
+	\addplot[only marks, mark=triangle*, mark size=3.0] table [x=Ic_mA, y=U, col sep=comma] {data/aggregate/ECRTS17data/U0250.csv};
+	\addplot[only marks, mark=o, mark size=3.0] table [x=Ic_mA, y=U, col sep=comma] {data/aggregate/ECRTS17data/U0130.csv};
+	\legend{$U=1.0000$,$U=0.694$,$U=0.5000$,$U=0.2500$,$U=0.1316$}
+	\end{axis}
+	\end{tikzpicture}
+   	\caption{Scaling Utilization (Experiment 4)}
+	\label{fig:ScalingUtilization}
+\end{figure}
+%\section{Experiment 4: Utilization Scaling}
+%To simulate a constraint on utilization, we introduce delays before and after the execution of the short-circuit detection task. A delay constant is set to keep the period consistent but is split into a pre-task and post-task delay. The pre-task delay is chosen using a pseudo-random number generator while the post-task delay is set to meet the constant delay requirement. This is done to simulate jitter in execution due to higher-priority tasks. For each utilization $U(\mathrm{T}_{scd})$ in Experiment 4, a FUL short was induced with inductance $L = 12 \text{mH}$. This inductance was chosen to demonstrate the broadest range of utilizations and the resultant scaling.
+\chapter{Conclusion} \label{chap:conclusion}
+%The conclusion goes here: use hypothesis from proposal as basis
+This work provides a novel solution for hardware-software co-design of real-time software-based short-circuit protection systems -- a cyber-physical system in which the inductive properties of a DC RL circuit are leveraged to construct a sporadic, real-time short-protection task. The relationship established between utilization and board space consumed by the air-core solenoid-style inductor placed in-circuit is optimized for both fixed inductor volume and fixed uniprocessor utilization.
+
+Like preceding works on engine control \cite{engineCtrl} and thermal-aware systems \cite{thermalAware}, this work demands further investigation into the real-time control of physical systems demonstrating dynamic behavior. Further study on the energy and performance trade-off between hardware, software, and physical system dynamics is reserved for future work.
+
+%Bibiography
+\linespread{1.0}
+\bibliographystyle{abbrv}
+\bibliography{bib/mybib}
+%Abstract Initialization
+\startabstractpage{TRADING UTILIZATION FOR CIRCUITRY:\\HARDWARE-SOFTWARE CO-DESIGN FOR REAL-TIME SOFTWARE-BASED SHORT-CIRCUIT PROTECTION}{AARON WILLCOCK}{August}{2018}{Dr. Nathan Fisher}{Computer Science}{Doctor of Philosophy}
+
+Short-circuit faults are a potential source of damage to circuitry in DC-powered systems. Industrial applications including power converters, inverters, and insulated-gate bipolar transistors (IGBTs) often rely on fault protection systems in the form of dedicated circuitry to prevent damage. To increase flexibility in short-circuit protection and decrease dedicated circuitry, a software-based approach is presented. This implementation requires minimal circuitry and allows for trade-off between board space and processor utilization. The design relies on a single inductor and microprocessor running a real-time task for identifying current and monitoring circuitry for faults. Experiments demonstrate detection of both hard-switching faults (HSF) and fault under load (FUL) shorts. The depicted relationship between processor utilization and board space consumed by the circuitry is confirmed through experimentation and allows optimization of board space with respect to utilization and vice versa. As a result, the proposed software-based protection is implementable with the addition of a single component and protects against damage from both HSF and FUL shorts.
+
+\end{document}

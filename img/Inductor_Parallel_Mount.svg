@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="300"
+   height="300"
+   viewBox="0 0 300 300"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="Inductor_Parallel_Mount.svg">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient5499"
+       osb:paint="solid">
+      <stop
+         style="stop-color:#7e3a15;stop-opacity:1;"
+         offset="0"
+         id="stop5501" />
+    </linearGradient>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="11.313709"
+     inkscape:cx="98.474052"
+     inkscape:cy="202.30157"
+     inkscape:document-units="px"
+     inkscape:current-layer="svg2"
+     showgrid="true"
+     showguides="false"
+     units="px"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:snap-global="true"
+     inkscape:snap-intersection-paths="true"
+     inkscape:object-nodes="true"
+     inkscape:snap-smooth-nodes="true"
+     inkscape:snap-midpoints="false"
+     inkscape:snap-bbox="true"
+     inkscape:object-paths="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4136" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path
+     style="fill:#800080;fill-rule:evenodd;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:0.50196081"
+     d="m 113,100 30,10 -15,5 -30,-10 z"
+     id="path5651"
+     inkscape:connector-curvature="0"
+     inkscape:export-filename="C:\Users\Anansi\Google Drive\Wayne State\CSC\RTS SCD\Docs\Presentation\Images\Inductor_Parallel_Mount.png"
+     inkscape:export-xdpi="2165.062"
+     inkscape:export-ydpi="2165.062" />
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.31666672;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 70.5,110.00001 110,123.16667 149.5,110.00001 110,96.833333 Z"
+     id="path5392-7"
+     inkscape:connector-curvature="0"
+     inkscape:export-filename="C:\Users\Anansi\Google Drive\Wayne State\CSC\RTS SCD\Docs\Presentation\Images\Inductor_Parallel_Mount.png"
+     inkscape:export-xdpi="2165.062"
+     inkscape:export-ydpi="2165.062" />
+  <flowRoot
+     xml:space="preserve"
+     id="flowRoot4161"
+     style="font-style:normal;font-weight:normal;font-size:7.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     inkscape:export-filename="C:\Users\Anansi\Google Drive\Wayne State\CSC\RTS SCD\Docs\Presentation\Images\Inductor_Parallel_Mount.png"
+     inkscape:export-xdpi="2165.062"
+     inkscape:export-ydpi="2165.062"><flowRegion
+       id="flowRegion4163"><rect
+         id="rect4165"
+         width="8"
+         height="8"
+         x="81"
+         y="122" /></flowRegion><flowPara
+       id="flowPara4167">56</flowPara></flowRoot>  <flowRoot
+     xml:space="preserve"
+     id="flowRoot4169"
+     style="font-style:normal;font-weight:normal;font-size:7.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     inkscape:export-filename="C:\Users\Anansi\Google Drive\Wayne State\CSC\RTS SCD\Docs\Presentation\Images\Inductor_Parallel_Mount.png"
+     inkscape:export-xdpi="2165.062"
+     inkscape:export-ydpi="2165.062"><flowRegion
+       id="flowRegion4171"><rect
+         id="rect4173"
+         width="11"
+         height="11"
+         x="81"
+         y="123" /></flowRegion><flowPara
+       id="flowPara4175">5vv6esdsa</flowPara></flowRoot>  <g
+     id="g5623"
+     transform="matrix(0.31180011,-0.95014772,0.95014772,0.31180011,-2.8966938,172.63817)"
+     inkscape:export-filename="C:\Users\Anansi\Google Drive\Wayne State\CSC\RTS SCD\Docs\Presentation\Images\Inductor_Parallel_Mount.png"
+     inkscape:export-xdpi="2165.062"
+     inkscape:export-ydpi="2165.062">
+    <path
+       inkscape:connector-curvature="0"
+       id="path5591"
+       d="m 110,110 c 0,8 0,8 0,8"
+       style="fill:none;fill-rule:evenodd;stroke:#7e3a15;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:0.5, 1;stroke-dashoffset:0;stroke-opacity:1" />
+    <ellipse
+       ry="3"
+       rx="10"
+       cy="110"
+       cx="110"
+       id="path5404"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:0.5, 1;stroke-dashoffset:0;stroke-opacity:0.75294118" />
+    <g
+       style="stroke:#7e3a15;stroke-width:0.70565015;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(0.99974162,0,0,0.50219613,-32.963064,24.692542)"
+       id="g5495">
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#7e3a15;stroke-width:0.70565015;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 133,140 c 0,1 0,1 10.04465,3.06798 C 152.97742,145.11292 153,145 153,146 c 0,1 0,1 -10,3 -10,2 -10,2 -10,3 0,1 0,1 10,3 10,2 10,2 10,3 0,1 0,1 -10,3 -10,2 -10,2 -10,2.99999 0,1 0,1 10,3 10,2 10,2 10,3"
+         id="path5448-8"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="csccccccccc" />
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#7e3a15;stroke-width:0.70565015;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 153,110.00001 c 0,1 0,1 -10.04465,3.06798 -9.93277,2.04494 -9.95535,1.93202 -9.95535,2.93202 0,1 0,1 10,3 10,2 10,2 10,3 0,1 0,1 -10,3 -10,2 -10,2 -10,3 0,1 0,1 10,3 10,2 10,2 10,2.99999 0,1 0,1 -10,3 -10,2 -10,2 -10,3"
+         id="path5448-8-6"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="csccccccccc" />
+    </g>
+    <path
+       inkscape:connector-curvature="0"
+       id="path5432"
+       d="m 100,82 0,28"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:0.5, 1.5;stroke-dashoffset:0;stroke-opacity:0.50196078" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path5434"
+       d="m 120,82 0,28"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:0.5, 1.5;stroke-dashoffset:0;stroke-opacity:0.75294118" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path5505"
+       d="m 120,110 -10,0"
+       style="fill:none;fill-rule:evenodd;stroke:#7e3a15;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path5507"
+       d="m 120,80 -10,0"
+       style="fill:none;fill-rule:evenodd;stroke:#7e3a15;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <ellipse
+       ry="3"
+       rx="10"
+       cy="79.9375"
+       cx="110"
+       id="path5404-3"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:0.5, 1;stroke-dashoffset:0;stroke-opacity:0.75294118" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path5589"
+       d="m 110,80 0,-6"
+       style="fill:none;fill-rule:evenodd;stroke:#7e3a15;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:0.5, 1.5;stroke-dashoffset:0;stroke-opacity:1" />
+  </g>
+</svg>
