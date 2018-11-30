@@ -67,22 +67,22 @@
  %\twohalfintopmar
  \begin{center}
  \begin{onehalfspacing} % For the `Large' font size, this will look single spaced. -jg
-  {\Large\bf #1 \mbox{}} \\
+  {\bf #1 \mbox{}} \\
  \end{onehalfspacing}
   %\vfill
   by \\
   %\vspace{2ex} % ex is the height of the lowercase 'x' for the current font. -jg
   %#2 \\
-  {\Large\bf #2}\\
+  {\bf #2}\\
   %\vfill
-  {\Large\bf THESIS}\\
+  {\bf THESIS}\\
    Submitted to the Graduate School \\
    of Wayne State University, \\
    Detroit, Michigan \\
    in partial fulfillment of the requirements \\
    for the degree of \\
    %of the requirements for the degree of \\
-   {\Large\bf #3} \\
+   {\bf #3} \\
    2018 \\
    \begin{adjustwidth}{225pt}{-225pt}
     MAJOR: COMPUTER SCIENCE\\
@@ -179,7 +179,8 @@
 
 % jj: The only difference is \dotfill instead of \hfil.
 \def\l@chapter#1#2{\pagebreak[3]
- \vskip 1.0em plus 1pt \@tempdima 1.5em \begingroup % em is the width of capital M for the current font. -jg
+ %\vskip 1.0em plus 1pt \@tempdima 1.5em \begingroup % em is the width of capital M for the current font. -jg
+ \vskip 0.0em plus 0pt \@tempdima 1.5em \begingroup % em is the width of capital M for the current font. -jg
  \parindent \z@ \rightskip \@pnumwidth
  \parfillskip -\@pnumwidth
  %{\bf \leavevmode #1}\dotfill \hbox to\@pnumwidth{\hss #2}\par
@@ -188,7 +189,7 @@
 }
 
 %\def\l@chap{\@dottedtocline{1}{0.5em}{3.5em}}
-\def\l@chap{\@dottedtocline{1}{0.0em}{3.5em}} %AW: Converted to 0.0em for Wayne State University formatting guidelines
+\def\l@chap{\@dottedtocline{0}{0.0em}{3.5em}} %AW: Converted to 0.0em for Wayne State University formatting guidelines
 \def\l@section{\@dottedtocline{2}{0.5em}{2.3em}}
 \def\l@subsection{\@dottedtocline{3}{8.3em}{3.2em}}
 \def\l@subsubsection{\@dottedtocline{4}{12.5em}{4.1em}}
@@ -210,15 +211,15 @@
  %\twointopmar
  \centerline{\large\bf TABLE OF CONTENTS}
  %\vspace{0.7in}
- \begin{singlespace}
-  \@starttoc{toc}\if@restonecol\twocolumn\fi
- \end{singlespace}
+ %\begin{singlespace}
+  \@starttoc{toc}%\if@restonecol\twocolumn\fi
+ %\end{singlespace}
 }
 
 \def\listoffigures{%
  \newpage
  \addcontentsline{toc}{chapter}{List of Figures}
- \@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn\fi
+ %\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn\fi
  %\hbox{ }
  %\twointopmar
  \centerline{\large\bf LIST OF FIGURES}
@@ -345,7 +346,7 @@
  \ifnum \c@secnumdepth >\m@ne
   \refstepcounter{chapter}
   \typeout{\@chapapp\space\thechapter.}
-  \addtocontents{toc}{\hbox{ }}
+  %\addtocontents{toc}{\hbox{ }}
   %\addcontentsline{toc}{chap}{\protect\numberline{\hbox{ }\hfill\bf\thechapter.\hspace{5pt}}{\bf #1}} %Original rac.sty line
   %\addcontentsline{toc}{chap}{\bf Chapter \thechapter. #1}
   \addcontentsline{toc}{chap}{Chapter \thechapter. #1}
@@ -439,7 +440,7 @@
  \if@twoside \ifodd\c@page \else\thispagestyle{empty} \clearpage\hbox{}\fi\fi
  \addtocontents{loa}{\hbox{ }}
  \addcontentsline{loa}{appendix}{\protect\numberline{\theappendix.}{\ignorespaces\rm #1}}
- \addtocontents{toc}{\hbox{ }}
+ %\addtocontents{toc}{\hbox{ }}
  %\addcontentsline{toc}{appendix}{\bf Appendix \theappendix}
  \addcontentsline{toc}{appendix}{Appendix \theappendix}
  %\hbox{ }

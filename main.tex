@@ -56,10 +56,6 @@
 \hypersetup{ hidelinks }
 \usepackage{bookmark}
 
-\doublespacing
-\linespread{2.0}
-\huge
-
 %\usepackage[utf8x]{inputenc}
 
 \usepackage{etoolbox}
@@ -71,6 +67,14 @@
 \setlength{\bibsep}{0pt plus 0.3ex}
 \renewcommand{\bibname}{\vspace{-1.0in}\centerline{\large\bf REFERENCES}\vspace{-0.5in}}
 \bibliographystyle{abbrv}
+
+%\usepackage{titlesec}
+%\titlespacing*{\section}{0pt}{0pt}{0pt}
+%\titlespacing*{\subsection}{0pt}{0pt}{0pt}
+
+\doublespacing
+\linespread{1.5}
+\huge
 
 \begin{document}
     \titlepage{TRADING UTILIZATION FOR CIRCUITRY:\\HARDWARE-SOFTWARE CO-DESIGN FOR REAL-TIME SOFTWARE-BASED SHORT-CIRCUIT PROTECTION}{AARON WILLCOCK}{MASTER OF SCIENCE}
@@ -90,9 +94,9 @@
     \listoftables			% List of tables (not required) for qual
     \listoffigures       	% List of figures required for qual
     
-    \makeatletter
-    \providecommand*{\toclevel@chap}{0}
-    \makeatother
+    % \makeatletter
+    % \providecommand*{\toclevel@chap}{0}
+    % \makeatother
 
     %Chapter Initialization
     \startthechapters
