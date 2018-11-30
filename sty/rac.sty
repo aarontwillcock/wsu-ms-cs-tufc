@@ -43,14 +43,17 @@
 }
 
 %-- Margins --
+%Two-sided margins
 \if@twoside \oddsidemargin 0.5in \evensidemargin 0in \marginparwidth .6in \textheight=8.95in
 \else \oddsidemargin 0.5in \marginparwidth .9in \textheight=9.0in\fi% left margin=1in + oddsidemargin, marginparwidth: text box for margin notes
-\topmargin -.7in \headheight 0.35in \headsep 0.35in \footskip 0.5in % header and footer margins
-\textwidth=6.0in % width of the text body on a page
+
+%Single-sided margins
+\topmargin 1.0in \headheight 0.5in \headsep 0.35in \footskip 0.5in % header and footer margins
+\textwidth=6.5in % width of the text body on a page 8.5in-(1in*2) = 6.5in
 % The top margin = 1in plus vspace. For some reason, need to subtract 0.35in also. -jg
 \def\vertadjust{\vspace{-0.35in}} % Required for proper vertical spacing. -jg
-\def\twoinmar{\vertadjust\vspace{1.0in}} % Two inch top margin -jg
-\def\twohalfinmar{\vertadjust\vspace{1.5in}} % Two and a half inch top margin -jg
+\def\twointopmar{\vertadjust\vspace{1.0in}} % Two inch top margin -jg
+\def\twohalfintopmar{\vertadjust\vspace{1.5in}} % Two and a half inch top margin -jg
 
 %-- Front pages --
 
@@ -60,8 +63,8 @@
 
 \def\titlepage#1#2#3#4#5#6{
  \ttlpg
- \hbox{ }
- \twohalfinmar
+ %\hbox{ }
+ %\twohalfintopmar
  \begin{center}
  \begin{onehalfspacing} % For the `Large' font size, this will look single spaced. -jg
   {\Large\bf #1 \mbox{}} \\
@@ -105,7 +108,7 @@
  \ttlpg
  \hbox{ }
  \if@twoside \clearpage\hbox{}\thispagestyle{empty} \fi
- \twoinmar
+ %\twointopmar
 }
 
 \def\copyrightpage#1{
@@ -124,8 +127,8 @@
 
 \def\dedicationpage#1{
     \newpage
-    \addcontentsline{toc}{chapter}{DEDICATION}
-    \hbox{ }
+    \addcontentsline{toc}{chapter}{Dedication}
+    %\hbox{ }
     \begin{center}
     {\large\bf DEDICATION}\\
     #1
@@ -133,10 +136,21 @@
     \end{center}
 }
 
+\def\autobiographicalstatementpage#1{
+    \newpage
+    \addcontentsline{toc}{chapter}{Autobiographical Statement}
+    %\hbox{ }
+    \begin{center}
+    {\large\bf AUTOBIOGRAPHICAL STATEMENT}\\
+    #1
+    \vfill
+    \end{center}
+}
+
 \def\ackowledgementspage#1{
     \newpage
-    \addcontentsline{toc}{chapter}{ACKNOWLEDGEMENTS}
-    \hbox{ }
+    \addcontentsline{toc}{chapter}{Acknowledgements}
+    %\hbox{ }
     \begin{center}
     {\large\bf ACKNOWLEDGEMENTS}\\
     #1
@@ -146,9 +160,9 @@
 
 \def\startprefacepage{
  \newpage
- \addcontentsline{toc}{chapter}{PREFACE}
+ \addcontentsline{toc}{chapter}{Preface}
  \hbox{ }
- \twoinmar
+ %\twointopmar
  \centerline{\large\bf PREFACE}
  \vspace{0.7in}
 }
@@ -168,32 +182,34 @@
  \vskip 1.0em plus 1pt \@tempdima 1.5em \begingroup % em is the width of capital M for the current font. -jg
  \parindent \z@ \rightskip \@pnumwidth
  \parfillskip -\@pnumwidth
- {\bf \leavevmode #1}\dotfill \hbox to\@pnumwidth{\hss #2}\par
+ %{\bf \leavevmode #1}\dotfill \hbox to\@pnumwidth{\hss #2}\par
+ {\leavevmode #1}\dotfill \hbox to\@pnumwidth{\hss #2}\par
  \endgroup
 }
 
-\def\l@chap{\@dottedtocline{1}{0.5em}{3.5em}}
-\def\l@section{\@dottedtocline{2}{5.0em}{2.3em}}
+%\def\l@chap{\@dottedtocline{1}{0.5em}{3.5em}}
+\def\l@chap{\@dottedtocline{1}{0.0em}{3.5em}} %AW: Converted to 0.0em for Wayne State University formatting guidelines
+\def\l@section{\@dottedtocline{2}{0.5em}{2.3em}}
 \def\l@subsection{\@dottedtocline{3}{8.3em}{3.2em}}
 \def\l@subsubsection{\@dottedtocline{4}{12.5em}{4.1em}}
 
 \setcounter{tocdepth}{3} % Number of section layers to show in TOC (i.e. section, subsection, subsubsection)
 \setcounter{secnumdepth}{3} % Number of subsection layers to allow in document
 
-\def\l@figure{\@dottedtocline{1}{1.0em}{3.5em}}
-\let\l@table\l@figure
+\def\l@figure{\@dottedtocline{1}{1.0em}{5.5em}}
+\def\l@table{\@dottedtocline{1}{1.0em}{5.0em}}
 \let\l@map\l@figure
 \let\l@anything\l@figure
-\def\l@appendix{\@dottedtocline{1}{1.0em}{2.5em}}
+\def\l@appendix{\@dottedtocline{1}{0.0em}{2.5em}}
 \let\l@abbreviation\l@figure
 
 \def\tableofcontents{%
  \newpage
  \@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn\fi
- \hbox{ }
- %\twoinmar
+ %\hbox{ }
+ %\twointopmar
  \centerline{\large\bf TABLE OF CONTENTS}
- \vspace{0.7in}
+ %\vspace{0.7in}
  \begin{singlespace}
   \@starttoc{toc}\if@restonecol\twocolumn\fi
  \end{singlespace}
@@ -201,30 +217,32 @@
 
 \def\listoffigures{%
  \newpage
- \addcontentsline{toc}{chapter}{LIST OF FIGURES}
+ \addcontentsline{toc}{chapter}{List of Figures}
  \@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn\fi
- \hbox{ }
- %\twoinmar
+ %\hbox{ }
+ %\twointopmar
  \centerline{\large\bf LIST OF FIGURES}
- \vspace{0.7in}
- \begin{singlespace}
+ %\vspace{0.7in}
+ %\begin{singlespace}
   \@starttoc{lof}\if@restonecol\twocolumn\fi
-  \addtocontents{lof}{\noindent\underline{\bf Figure}\hfill\rm\protect\newline}
- \end{singlespace}
+  %\addtocontents{lof}{\noindent\underline{\bf Figure}\hfill\rm\protect\newline}
+ %\end{singlespace}
 }
 
 \def\listoftables{%
  \newpage
- \addcontentsline{toc}{chapter}{LIST OF TABLES}
+ %\let\oldnumberline\numberline%
+ %\renewcommand{\numberline}{\tablename~\oldnumberline}%
+ \addcontentsline{toc}{chapter}{List of Tables}
  \@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn\fi
- \hbox{ }
- %\twoinmar
+ %\hbox{ }
+ %\twointopmar
  \centerline{\large\bf LIST OF TABLES}
- \vspace{0.7in}
- \begin{singlespace}
+ %\vspace{0.7in}
+ %\begin{singlespace}
   \@starttoc{lot}\if@restonecol\twocolumn\fi
-  \addtocontents{lot}{\noindent\underline{\bf Table}\hfill\rm\protect\newline}
- \end{singlespace}
+  %\addtocontents{lot}{\noindent\underline{\bf Table}\hfill\rm\protect\newline}
+ %\end{singlespace}
 }
 
 \def\listofmaps{%
@@ -232,7 +250,7 @@
  \addcontentsline{toc}{chapter}{LIST OF MAPS}
  \@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn\fi
  \hbox{ }
- \twoinmar
+ %\twointopmar
  \centerline{\large\bf LIST OF MAPS}
  \vspace{0.7in}
  \begin{singlespace}
@@ -246,12 +264,13 @@
  \addcontentsline{toc}{chapter}{LIST OF APPENDICES}
  \@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn\fi
  \hbox{ }
- \twoinmar
+ %\twointopmar
  \centerline{\large\bf LIST OF APPENDICES}
  \vspace{0.7in}
  \begin{singlespace}
   \@starttoc{loa}\if@restonecol\twocolumn\fi
-  \addtocontents{loa}{\noindent\underline{\bf Appendix}\hfill\rm\protect\newline}
+  %\addtocontents{loa}{\noindent\underline{\bf Appendix}\hfill\rm\protect\newline}
+  \addtocontents{loa}{\noindent\underline{Appendix}\hfill\rm\protect\newline}
  \end{singlespace}
 }
 
@@ -260,7 +279,7 @@
  \addcontentsline{toc}{chapter}{LIST OF ABBREVIATIONS}
  \@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn\fi
  \hbox{ }
- \twoinmar
+ %\twointopmar
  \centerline{\large\bf LIST OF ABBREVIATIONS}
  \vspace{0.7in}
  \begin{singlespace}
@@ -272,7 +291,7 @@
 
 \def\startabstractpage#1#2#3#4#5#6#7{% This formats the optional in-dissertation abstract - jg
     \newpage
-    \addcontentsline{toc}{chapter}{ABSTRACT}
+    \addcontentsline{toc}{chapter}{Abstract}
     \@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn\fi
     \hbox{ }
     \centerline{\Large\bf ABSTRACT}
@@ -310,8 +329,8 @@
 
 \def\startthechapters{%
  \def\@chapapp{CHAPTER}
- \addtocontents{toc}{\protect\mbox{ }\protect\newline\noindent{\bf CHAPTER}\protect\newline}
- \addtocontents{toc}{\hbox{ }}
+ %\addtocontents{toc}{\protect\mbox{ }\protect\newline\noindent{\bf CHAPTER}\protect\newline}
+ %\addtocontents{toc}{\hbox{ }}
  \clearpage % This has to be before the rest.  jj
  \if@twoside \ifodd\c@page \else \ttlpg \hbox{ }\fi\fi % For two-sided printing, make sure Chapter I starts on right-hand page. jg
  \clearpage
@@ -327,12 +346,14 @@
   \refstepcounter{chapter}
   \typeout{\@chapapp\space\thechapter.}
   \addtocontents{toc}{\hbox{ }}
-  \addcontentsline{toc}{chap}{\protect\numberline{\hbox{ }\hfill\bf\thechapter.\hspace{5pt}}{\bf #1}}
-  \addtocontents{toc}{\hbox{ }}
+  %\addcontentsline{toc}{chap}{\protect\numberline{\hbox{ }\hfill\bf\thechapter.\hspace{5pt}}{\bf #1}} %Original rac.sty line
+  %\addcontentsline{toc}{chap}{\bf Chapter \thechapter. #1}
+  \addcontentsline{toc}{chap}{Chapter \thechapter. #1}
+  %\addtocontents{toc}{\hbox{ }}
  \else
-  \addtocontents{toc}{\hbox{ }}
+  %\addtocontents{toc}{\hbox{ }}
   \addcontentsline{toc}{chap}{#1}
-  \addtocontents{toc}{\hbox{ }}
+  %\addtocontents{toc}{\hbox{ }}
  \fi
  \if@twocolumn \@topnewpage[\@makechapterhead{#2}]
  \else \@makechapterhead{#2} \@afterheading \fi
@@ -398,60 +419,63 @@
  \setcounter{section}{0}
  \def\@chapapp{APPENDIX}
  \pagestyle{plain}
- \clearpage
- \hbox{}
- \if@twoside \ifodd\c@page \else\thispagestyle{empty} \clearpage\hbox{}\fi\fi
- \thispagestyle{chappage}
- \addcontentsline{toc}{chapter}{APPENDICES}
- \hbox{ }
- \vertadjust
- \vfill
- \centerline{\large\bf APPENDICES} % The half title page
- \vfill
+ %\clearpage
+ %\hbox{}
+ %\if@twoside \ifodd\c@page \else\thispagestyle{empty} \clearpage\hbox{}\fi\fi
+ %\thispagestyle{chappage}
+ %\addcontentsline{toc}{chapter}{APPENDICES} %AW: Removed per Wayne State University Formatting Guidelines
+ %\hbox{ }
+ %\vertadjust
+ %\vfill
+ %\centerline{\large\bf APPENDICES} % The half title page
+ %\vfill
 }
 
 \def\appendix#1{%
  \clearpage \global\@topnum\z@ \@afterindenttrue
  \refstepcounter{chapter}
  \typeout{\@chapapp\space\theappendix.}
- \hbox{}
+ %\hbox{}
  \if@twoside \ifodd\c@page \else\thispagestyle{empty} \clearpage\hbox{}\fi\fi
  \addtocontents{loa}{\hbox{ }}
  \addcontentsline{loa}{appendix}{\protect\numberline{\theappendix.}{\ignorespaces\rm #1}}
- \hbox{ }
- \twoinmar
+ \addtocontents{toc}{\hbox{ }}
+ %\addcontentsline{toc}{appendix}{\bf Appendix \theappendix}
+ \addcontentsline{toc}{appendix}{Appendix \theappendix}
+ %\hbox{ }
+ %\twointopmar
  \centerline{\large\bf \@chapapp{} \theappendix} \par
- \vspace{0.3in}
- \begin{center}
-  \Large\bf #1
- \end{center}
- \vspace{0.7in}
- \par\@afterindenttrue
+ %\vspace{0.3in}
+ %\begin{center}
+ % \Large\bf #1
+ %\end{center}
+ %\vspace{0.7in}
+ %\par\@afterindenttrue
 }
 
 \def\endofchapterbibliography{%
  \clearpage
  \hbox{ }
- \twoinmar
+ %\twointopmar
  \begin{center}
   {\large \bf BIBLIOGRAPHY}
  \end{center}
  \vspace{0.75in}
 }
 
-%\def\startbibliography{% This sets things up for BibTeX
-% \clearpage
-% \hbox{}
-% \if@twoside \ifodd\c@page \else\thispagestyle{empty} \clearpage\hbox{} \fi\fi
-% \thispagestyle{chappage}
-% \addcontentsline{toc}{chapter}{BIBLIOGRAPHY}
-% \hbox{ }
-% \vertadjust
- %\vfill
- %\centerline{\large\bf BIBLIOGRAPHY} % The half title page
- %\vfill
- %\renewcommand{\bibname}{\vspace{-.13in}\centerline{\large\bf BIBLIOGRAPHY}}
-%}
+\def\startbibliography{% This sets things up for BibTeX
+\clearpage
+\hbox{}
+\if@twoside \ifodd\c@page \else\thispagestyle{empty} \clearpage\hbox{} \fi\fi
+\thispagestyle{chappage}
+\addcontentsline{toc}{chapter}{References}
+\hbox{ }
+\vertadjust
+ \vfill
+ \centerline{\large\bf REFERENCES} % The half title page
+ \vfill
+ \renewcommand{\bibname}{\vspace{-.13in}\centerline{\large\bf REFERENCES}}
+}
 
 \def\thebibliography#1{% If using BibTeX, this code is ignored
  %\clearpage
@@ -466,7 +490,7 @@
  %\vfill
  \newpage
  \hbox{ }
- \twoinmar
+ %\twointopmar
  \centerline{\large\bf BIBLIOGRAPHY}
  \vspace{0.7in}
  \list{[\arabic{enumi}]}{\settowidth\labelwidth{[#1]}\leftmargin\labelwidth
