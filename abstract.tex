@@ -1,0 +1,27 @@
+\section*{ABSTRACT}
+\addcontentsline{toc}{section}{Abstract}
+\centerline{\bf TRADING UTILIZATION FOR CIRCUITRY}
+\vspace{-0.4cm}
+\centerline{\bf HARDWARE-SOFTWARE CO-DESIGN FOR REAL-TIME}
+\vspace{-0.4cm}
+\centerline{\bf SOFTWARE-BASED SHORT-CIRCUIT PROTECTION}
+
+{\setlength\baselineskip{0.3in}
+\begin{center}
+by\\
+\medskip
+{\bf AARON WILLCOCK}\\
+\medskip
+{\bf May 2019}\\
+\end{center}
+\Vspc
+\begin{tabular}{ll}
+	{\bf Advisor:} & Dr. Nathan Fisher \\
+	{\bf Major:} & Computer Science \\
+	{\bf Degree:} & Master of Science
+\end{tabular}
+}
+
+\bigskip \bigskip
+
+Short-circuit faults are a potential source of damage to circuitry in DC-powered systems. Industrial applications including power converters, inverters, and insulated-gate bipolar transistors (IGBTs) often rely on fault protection systems in the form of dedicated circuitry to prevent damage. To increase flexibility in short-circuit protection and decrease dedicated circuitry, a software-based approach is presented. This implementation requires minimal circuitry and allows for trade-off between board space and processor utilization. The design relies on a single inductor and microprocessor running a real-time task for identifying current and monitoring circuitry for faults. Experiments demonstrate detection of both hard-switching faults (HSF) and fault under load (FUL) shorts. The depicted relationship between processor utilization and board space consumed by the circuitry is confirmed through experimentation and allows optimization of board space with respect to utilization and vice versa. As a result, the proposed software-based protection is implementable with the addition of a single component and protects against damage from both HSF and FUL shorts.
