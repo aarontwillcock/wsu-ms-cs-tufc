@@ -1,4 +1,5 @@
 .vscode/
+*.out
 *.md5
 *.aux
 *.auxlock
