@@ -509,7 +509,7 @@ In addition to the comparison table, an example FUL waveform is shown in Figure 
         axis y line*=left,
         xlabel=Time (s),
         ylabel=RA2 (V)]
-    \addplot[mark size=0.07, mark=o, red] table [x=Time, y=RA2, col sep=comma] {data/rawdata/ECRTS17data/fc.csv};
+    \addplot[mark size=0.07, mark=o, red, each nth point={10}] table [x=Time, y=RA2, col sep=comma] {data/rawdata/ECRTS17data/fc.csv};
     \label{RAplot}
     \addlegendentry{$RA2$};
     \end{axis}
@@ -519,7 +519,7 @@ In addition to the comparison table, an example FUL waveform is shown in Figure 
         ylabel=RA1 (V)]
         \addlegendimage{/pgfplots/refstyle=RAplot}
         \addlegendentry{$RA2$}
-    \addplot[mark size=0.7, mark=square*, blue] table [x=Time, y=RA1, col sep=comma] {data/rawdata/ECRTS17data/fc.csv};
+    \addplot[mark size=0.7, mark=square*, blue, each nth point={100}] table [x=Time, y=RA1, col sep=comma] {data/rawdata/ECRTS17data/fc.csv};
     \addlegendentry{$RA1$};
     \draw[mark=square*] (axis cs:\pgfkeysvalueof{/pgfplots/xmin},1.96000e-01) -- (axis cs:\pgfkeysvalueof{/pgfplots/xmax},1.96000e-01);
     \end{axis}
